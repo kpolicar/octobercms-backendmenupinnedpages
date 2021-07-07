@@ -1,5 +1,5 @@
 <template id="mainmenu-items-extension">
-    <li class="mainmenu-item mainmenu-preview mainmenu-pinned has-subitems" data-submenu-index="pinned">
+    <li class="mainmenu-item mainmenu-preview mainmenu-pinned has-subitems active" data-submenu-index="pinned">
         <a
             href="javascript:;"
         <?php if (!isset($isVerticalMenu)): ?>
@@ -16,15 +16,11 @@
         </span>
         <?php endif ?>
         </a>
-        <?= var_dump($context = BackendMenu::getContext()) ?>
     </li>
 </template>
 
 <template id="mainmenu-submenu-dropdowns">
-    <ul class="mainmenu-items mainmenu-submenu-dropdown hover-effects" data-submenu-index="pinned">
-        <li class="mainmenu-item section-title">
-            <span class="nav-label">Pinned Pages</span>
-        </li>
+    <ul class="mainmenu-items mainmenu-submenu-dropdown hover-effects js-pinned-pages" data-submenu-index="pinned">
 
         <?= $this->makeLayoutPartial('~/plugins/kpolicar/backendmenupinnedpages/layouts/_mainmenu_pinned_items') ?>
     </ul>
