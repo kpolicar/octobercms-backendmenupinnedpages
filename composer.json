@@ -1,5 +1,5 @@
 {
-    "name": "kpolicar/personalizedbackend-plugin",
+    "name": "kpolicar/backendmenupinnedpages-plugin",
     "type": "october-plugin",
     "description": "No description provided yet...",
     "require": {

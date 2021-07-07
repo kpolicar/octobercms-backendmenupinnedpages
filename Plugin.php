@@ -1,4 +1,4 @@
-<?php namespace Kpolicar\PersonalizedBackend;
+<?php namespace Kpolicar\BackendmenuPinnedPages;
 
 use Backend;
 use System\Classes\CombineAssets;
@@ -7,7 +7,7 @@ use Backend\Classes\Controller as BackendController;
 use BackendAuth;
 
 /**
- * PersonalizedBackend Plugin Information File
+ * BackendmenuPinnedPages Plugin Information File
  */
 class Plugin extends PluginBase
 {
@@ -19,7 +19,7 @@ class Plugin extends PluginBase
     public function pluginDetails()
     {
         return [
-            'name'        => 'PersonalizedBackend',
+            'name'        => 'BackendmenuPinnedPages',
             'description' => 'No description provided yet...',
             'author'      => 'Kpolicar',
             'icon'        => 'icon-leaf'
@@ -46,27 +46,13 @@ class Plugin extends PluginBase
         BackendController::extend(function($controller)
         {
             if (BackendAuth::check()) {
-                $controller->addCss('/plugins/kpolicar/personalizedbackend/assets/css/menu.css');
-                $controller->addJs('/plugins/kpolicar/personalizedbackend/assets/js/menu.js', ['defer' => true]);
+                $controller->addCss('/plugins/kpolicar/backendmenupinnedpages/assets/css/menu.css');
+                $controller->addJs('/plugins/kpolicar/backendmenupinnedpages/assets/js/menu.js', ['defer' => true]);
             }
         });
         \Event::listen('backend.layout.extendHead', function ($a) {
-            return $a->makeLayoutPartial('~/plugins/kpolicar/personalizedbackend/layouts/_mainmenu_buttons');
+            return $a->makeLayoutPartial('~/plugins/kpolicar/backendmenupinnedpages/layouts/_mainmenu_buttons');
         });
-    }
-
-    /**
-     * Registers any front-end components implemented in this plugin.
-     *
-     * @return array
-     */
-    public function registerComponents()
-    {
-        return []; // Remove this line to activate
-
-        return [
-            'Kpolicar\PersonalizedBackend\Components\MyComponent' => 'myComponent',
-        ];
     }
 
     /**
@@ -79,29 +65,9 @@ class Plugin extends PluginBase
         return []; // Remove this line to activate
 
         return [
-            'kpolicar.personalizedbackend.some_permission' => [
-                'tab' => 'PersonalizedBackend',
+            'kpolicar.backendmenupinnedpages.some_permission' => [
+                'tab' => 'Backendmenupinnedpages',
                 'label' => 'Some permission'
-            ],
-        ];
-    }
-
-    /**
-     * Registers back-end navigation items for this plugin.
-     *
-     * @return array
-     */
-    public function registerNavigation()
-    {
-        return []; // Remove this line to activate
-
-        return [
-            'personalizedbackend' => [
-                'label'       => 'PersonalizedBackend',
-                'url'         => Backend::url('kpolicar/personalizedbackend/mycontroller'),
-                'icon'        => 'icon-leaf',
-                'permissions' => ['kpolicar.personalizedbackend.*'],
-                'order'       => 500,
             ],
         ];
     }
