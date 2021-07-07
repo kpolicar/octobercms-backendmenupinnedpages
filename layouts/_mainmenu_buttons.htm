@@ -1,0 +1,49 @@
+<template id="mainmenu-items-extension">
+    <li class="mainmenu-item mainmenu-preview mainmenu-pinned has-subitems" data-submenu-index="pinned">
+        <a
+            href="javascript:;"
+        <?php if (!isset($isVerticalMenu)): ?>
+        data-tooltip-text="Pinned pages"
+        <?php endif ?>
+        >
+        <span class="nav-icon">
+            <i class="icon-thumb-tack rotate-45"></i>
+        </span>
+
+        <?php if (isset($isVerticalMenu)): ?>
+        <span class="nav-label">
+                                <?= e(trans('backend::lang.tooltips.preview_website')) ?>
+                            </span>
+        <?php endif ?>
+        </a>
+    </li>
+    <li class="mainmenu-item mainmenu-preview">
+        <a
+            href="<?= Url::to('/') ?>"
+            target="_blank"
+            rel="noopener noreferrer"
+        <?php if (!isset($isVerticalMenu)): ?>
+        data-tooltip-text="Recent pages"
+        <?php endif ?>
+        >
+        <span class="nav-icon">
+            <i class="icon-history"></i>
+        </span>
+
+        <?php if (isset($isVerticalMenu)): ?>
+        <span class="nav-label">
+            <?= e(trans('backend::lang.tooltips.preview_website')) ?>
+        </span>
+        <?php endif ?>
+        </a>
+    </li>
+</template>
+
+<template id="mainmenu-submenu-dropdowns">
+    <ul class="mainmenu-items mainmenu-submenu-dropdown hover-effects" data-submenu-index="pinned">
+        <li class="mainmenu-item section-title">
+            <span class="nav-label">aaaa</span>
+        </li>
+aa
+    </ul>
+</template>

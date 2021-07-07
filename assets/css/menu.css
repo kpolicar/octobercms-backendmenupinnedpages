@@ -1,0 +1,13 @@
+.mainmenu-item.mainmenu-pinned.active .nav-icon i {
+    color: #DB6A26;
+}
+.layout-mainmenu .navbar ul.mainmenu-items[data-main-menu] > li.mainmenu-item.has-subitems.mainmenu-pinned > a:after {
+    display: none;
+}
+.mainmenu-item .nav-icon i {
+    transition: 0.5s;
+}
+
+.mainmenu-item .nav-icon .icon-thumb-tack.rotate-45:before {
+    transform: rotate(45deg);
+}
