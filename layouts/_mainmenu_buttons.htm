@@ -35,11 +35,13 @@
             }
         </style>
 
-        <li class="mainmenu-item">controller
+        <li class="mainmenu-item">
 
             <a href="#"
                data-request="onPinPage"
-               data-request-data="label: '<?= e(trans($this->pageTitle)) ?>'"
+               data-request-data="
+               label: '<?= e(trans($this->pageTitle)) ?>',
+               context: '<?= e(json_encode(\System\Classes\SettingsManager::instance()->getContext())) ?>'"
                data-request-before-update="
                $(this).closest('ul').find('[data-pinned-page]').remove();"
                data-request-success="

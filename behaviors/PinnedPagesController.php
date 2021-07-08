@@ -1,6 +1,7 @@
 <?php namespace Kpolicar\BackendMenuPinnedPages\Behaviors;
 
 use Backend;
+use Illuminate\Support\Collection;
 use Kpolicar\BackendMenuPinnedPages\Helpers\SettingsManagerHelper;
 use Request;
 use System\Classes\SettingsManager;
@@ -15,10 +16,11 @@ class PinnedPagesController extends ControllerBehavior
     public function onPinPage()
     {
         $backendPath = $this->currentBackendPath();
+        $context = json_decode(post('context'));
 
         BackendAuth::user()->pinned_pages()->create([
             'path' => $backendPath,
-            'icon' => $this->parseIconFromSettingsManager() ?? $this->parseIconFromMainMenu() ?? 'icon-files-o',
+            'icon' => $this->parseIconFromSettingsManager($context) ?? $this->parseIconFromMainMenu() ?? 'icon-files-o',
             'label' => e(post('label')),
         ]);
 
@@ -28,13 +30,12 @@ class PinnedPagesController extends ControllerBehavior
         ];
     }
 
-    protected function parseIconFromSettingsManager()
+    protected function parseIconFromSettingsManager($context)
     {
         $items = collect(SettingsManager::instance()->listItems());
-        $active = optional($items->flatten()->first(function ($item) {
-            return SettingsManagerHelper::settingsMenuItemIsActive($item);
+        $active = optional($items->flatten()->first(function ($item) use ($context) {
+            return SettingsManagerHelper::settingsMenuItemIsActive($item, $context);
         }));
-        //dd($items, \System\Classes\SettingsManager::instance()->getContext());
 
         return $active->icon;
     }
