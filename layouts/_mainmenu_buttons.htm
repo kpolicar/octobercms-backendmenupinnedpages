@@ -5,7 +5,7 @@
         <a
             href="javascript:;"
         <?php if (!isset($isVerticalMenu)): ?>
-        data-tooltip-text="Pinned pages"
+        data-tooltip-text="<?= e(trans('kpolicar.backendmenupinnedpages::lang.menu.item_tooltip')) ?>"
         <?php endif ?>
         >
         <span class="nav-icon">
@@ -55,7 +55,7 @@
             <i class="icon-thumb-tack"></i>
         </span>
                 <span class="nav-label">
-            Pin this page
+            <?= e(trans('kpolicar.backendmenupinnedpages::lang.menu.pin_current')) ?>
         </span>
             </a>
 
@@ -73,7 +73,7 @@
             <?= $this->makeLayoutPartial('~/plugins/kpolicar/backendmenupinnedpages/layouts/__unpin_icon') ?>
         </span>
                 <span class="nav-label">
-            Unpin this page
+            <?= e(trans('kpolicar.backendmenupinnedpages::lang.menu.unpin_current')) ?>
         </span>
             </a>
         </li>
@@ -81,7 +81,9 @@
         <li class="mainmenu-item section-title"
             data-current-pin-label
             style="<?= BackendAuth::user()->pinned_pages->count() == 0 ? 'display: none' :'' ?>">
-            <span class="nav-label">Pinned Pages</span>
+            <span class="nav-label">
+                <?= e(trans('kpolicar.backendmenupinnedpages::lang.menu.sidemenu_items_title')) ?>
+            </span>
         </li>
 
         <?= $this->makeLayoutPartial('~/plugins/kpolicar/backendmenupinnedpages/layouts/_mainmenu_pinned_items') ?>
