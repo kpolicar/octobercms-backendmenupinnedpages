@@ -1,7 +1,7 @@
 <?php namespace Kpolicar\BackendMenuPinnedPages\Behaviors;
 
 use Backend;
-use Illuminate\Support\Collection;
+use Kpolicar\BackendMenuPinnedPages\Helpers\BackendMenuHelpers;
 use Kpolicar\BackendMenuPinnedPages\Helpers\SettingsManagerHelper;
 use Request;
 use System\Classes\SettingsManager;
@@ -16,11 +16,11 @@ class PinnedPagesController extends ControllerBehavior
     public function onPinPage()
     {
         $backendPath = $this->currentBackendPath();
-        $context = json_decode(post('context'));
+        $this->setContextFromRequest();
 
         BackendAuth::user()->pinned_pages()->create([
             'path' => $backendPath,
-            'icon' => $this->parseIconFromSettingsManager($context) ?? $this->parseIconFromMainMenu() ?? 'icon-files-o',
+            'icon' => $this->resolveIconFromSettingsManager() ?? $this->resolveIconFromMenu() ?? 'icon-files-o',
             'label' => e(post('label')),
         ]);
 
@@ -28,23 +28,6 @@ class PinnedPagesController extends ControllerBehavior
             '@#layout-mainmenu .js-pinned-pages' =>
                 $this->makeLayoutPartial('~/plugins/kpolicar/backendmenupinnedpages/layouts/_mainmenu_pinned_items')
         ];
-    }
-
-    protected function parseIconFromSettingsManager($context)
-    {
-        $items = collect(SettingsManager::instance()->listItems());
-        $active = optional($items->flatten()->first(function ($item) use ($context) {
-            return SettingsManagerHelper::settingsMenuItemIsActive($item, $context);
-        }));
-
-        return $active->icon;
-    }
-
-    protected function parseIconFromMainMenu()
-    {
-        $activeMenuItem = optional(BackendMenu::getActiveMainMenuItem());
-
-        return $activeMenuItem->icon;
     }
 
     public function onPinPageRemove() {
@@ -60,6 +43,40 @@ class PinnedPagesController extends ControllerBehavior
             'path' => $backendPath,
             'count' => BackendAuth::user()->pinned_pages->count(),
         ];
+    }
+
+    protected function setContextFromRequest()
+    {
+        rescue(function () {
+            $settingsContext = json_decode(post('settings_context'));
+            SettingsManager::setContext($settingsContext->owner, $settingsContext->itemCode);
+        });
+        rescue(function () {
+            $context = json_decode(post('context'));
+            BackendMenu::setContext($context->owner, $context->mainMenuCode, $context->sideMenuCode);
+        });
+    }
+
+    protected function resolveIconFromSettingsManager()
+    {
+        $items = collect(SettingsManager::instance()->listItems());
+        $active = optional($items->flatten()->first(function ($item) {
+            return SettingsManagerHelper::settingsMenuItemIsActive($item);
+        }));
+
+        return $active->icon;
+    }
+
+    protected function resolveIconFromMenu()
+    {
+        $activeMenuItem = optional(BackendMenu::getActiveMainMenuItem());
+        if ($activeMenuItem->sideMenu) {
+            if ($item = BackendMenuHelpers::getActiveSideMenuItem()) {
+                return $item->icon;
+            }
+        }
+
+        return $activeMenuItem->icon;
     }
 
     public function currentBackendPath()

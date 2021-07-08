@@ -1,16 +1,12 @@
 <?php namespace Kpolicar\BackendMenuPinnedPages;
 
 use Backend;
-use Illuminate\Support\Collection;
 use Kpolicar\BackendMenuPinnedPages\Behaviors\PinnedPagesController;
-use Kpolicar\BackendMenuPinnedPages\Helpers\SettingsManagerHelper;
 use Kpolicar\BackendMenuPinnedPages\Models\PinnedPage;
-use System\Classes\CombineAssets;
 use System\Classes\PluginBase;
 use Backend\Classes\Controller as BackendController;
 use Backend\Models\User as BackendUser;
 use BackendAuth;
-use System\Classes\SettingsManager;
 
 /**
  * BackendMenuPinnedPages Plugin Information File

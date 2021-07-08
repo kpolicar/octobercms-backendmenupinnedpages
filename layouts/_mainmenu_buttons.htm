@@ -40,8 +40,9 @@
             <a href="#"
                data-request="onPinPage"
                data-request-data="
-               label: '<?= e(trans($this->pageTitle)) ?>',
-               context: '<?= e(json_encode(\System\Classes\SettingsManager::instance()->getContext())) ?>'"
+               label: '<?= e($this->pageTitle) ?>',
+               settings_context: '<?= e(json_encode(\System\Classes\SettingsManager::instance()->getContext())) ?>',
+               context: '<?= e(json_encode(BackendMenu::getContext())) ?>'"
                data-request-before-update="
                $(this).closest('ul').find('[data-pinned-page]').remove();"
                data-request-success="
