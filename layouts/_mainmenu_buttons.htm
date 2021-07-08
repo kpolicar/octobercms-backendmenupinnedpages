@@ -1,5 +1,7 @@
 <template id="mainmenu-items-extension">
-    <li class="mainmenu-item mainmenu-preview mainmenu-pinned has-subitems active" data-submenu-index="pinned">
+    <li class="mainmenu-item mainmenu-preview mainmenu-pinned has-subitems <?= $this->isCurrentPathPinned() ? 'active' : '' ?>"
+        data-current-pin-status="<?= e($this->currentBackendPath()) ?>"
+        data-submenu-index="pinned">
         <a
             href="javascript:;"
         <?php if (!isset($isVerticalMenu)): ?>
@@ -7,7 +9,8 @@
         <?php endif ?>
         >
         <span class="nav-icon">
-            <i class="icon-thumb-tack rotate-45"></i>
+            <i class="icon-thumb-tack rotate-45">
+            </i>
         </span>
 
         <?php if (isset($isVerticalMenu)): ?>
@@ -20,7 +23,59 @@
 </template>
 
 <template id="mainmenu-submenu-dropdowns">
-    <ul class="mainmenu-items mainmenu-submenu-dropdown hover-effects js-pinned-pages" data-submenu-index="pinned">
+    <ul class="mainmenu-items mainmenu-submenu-dropdown hover-effects js-pinned-pages"
+        data-submenu-index="pinned">
+
+        <style>
+            .temp:hover {
+                color: #6A6CF7;
+            }
+            .temp {
+                transition: 0.1s !important;
+            }
+        </style>
+
+        <li class="mainmenu-item">
+
+            <a href="#"
+               data-request="onPinPage"
+               data-request-before-update="
+               $(this).closest('ul').find('[data-pinned-page]').remove();"
+               data-request-success="
+               $(this).closest('li').find('[data-current-unpin]').slideDown();
+               $(this).slideUp();
+               $('[data-current-pin-status=\''+$(this).data('current-pin')+'\']').addClass('active');"
+               data-current-pin="<?= e($this->currentBackendPath()) ?>"
+               style="position:relative; <?= $this->isCurrentPathPinned() ? 'display: none' : '' ?>">
+        <span class="nav-icon">
+            <i class="icon-thumb-tack"></i>
+        </span>
+                <span class="nav-label">
+            Pin this page
+        </span>
+            </a>
+
+            <a href="#"
+               data-request="onPinPageRemove"
+               data-request-success="
+               $(this).closest('ul').find('[data-pinned-page=\''+data.result+'\']').remove();
+               $(this).closest('li').find('[data-current-pin]').slideDown();
+               $(this).slideUp();
+               $('[data-current-pin-status=\''+$(this).data('current-unpin')+'\']').removeClass('active');"
+               data-current-unpin="<?= e($this->currentBackendPath()) ?>"
+               style="position:relative; <?= $this->isCurrentPathPinned() ? '' : 'display: none' ?>">
+        <span class="nav-icon">
+            <?= $this->makeLayoutPartial('~/plugins/kpolicar/backendmenupinnedpages/layouts/__unpin_icon') ?>
+        </span>
+                <span class="nav-label">
+            Unpin this page
+        </span>
+            </a>
+        </li>
+
+        <li class="mainmenu-item section-title">
+            <span class="nav-label">Pinned Pages</span>
+        </li>
 
         <?= $this->makeLayoutPartial('~/plugins/kpolicar/backendmenupinnedpages/layouts/_mainmenu_pinned_items') ?>
     </ul>

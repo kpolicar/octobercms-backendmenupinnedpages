@@ -12,11 +12,7 @@ class PinnedPagesController extends ControllerBehavior
 {
     public function onPinPage()
     {
-        $backendPath = \Str::replaceFirst(
-            URL::to(Backend::uri()).'/',
-            '',
-            URL::to(Request::path())
-        );
+        $backendPath = $this->currentBackendPath();
         $activeMenuItem = optional(BackendMenu::getActiveMainMenuItem());
 
         BackendAuth::user()->pinned_pages()->create([
@@ -26,7 +22,7 @@ class PinnedPagesController extends ControllerBehavior
         ]);
 
         return [
-            '#layout-mainmenu .js-pinned-pages' =>
+            '@#layout-mainmenu .js-pinned-pages' =>
                 $this->makeLayoutPartial('~/plugins/kpolicar/backendmenupinnedpages/layouts/_mainmenu_pinned_items')
         ];
     }
@@ -34,8 +30,26 @@ class PinnedPagesController extends ControllerBehavior
     public function onPinPageRemove() {
         Validator::validate(
             post(),
-            ['path' => 'required|string']
+            ['path' => 'nullable|string']
         );
-        BackendAuth::user()->pinned_pages()->where('path', post('path'))->delete();
+        $backendPath = post('path', $this->currentBackendPath());
+
+        BackendAuth::user()->pinned_pages()->where('path', $backendPath)->delete();
+
+        return $backendPath;
+    }
+
+    public function currentBackendPath()
+    {
+        return \Str::replaceFirst(
+            URL::to(Backend::uri()).'/',
+            '',
+            URL::to(Request::path())
+        );
+    }
+
+    public function isCurrentPathPinned()
+    {
+        return !!BackendAuth::user()->pinned_pages->firstWhere('path', $this->currentBackendPath());
     }
 }

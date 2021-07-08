@@ -1,5 +1,6 @@
 <?php namespace Kpolicar\BackendmenuPinnedPages\Helpers;
 
+use BackendAuth;
 use BackendMenu;
 
 class BackendMenuHelpers

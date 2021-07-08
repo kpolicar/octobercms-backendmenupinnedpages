@@ -1,6 +1,3 @@
-.mainmenu-item.mainmenu-pinned.active .nav-icon i {
-    color: #DB6A26;
-}
 .layout-mainmenu .navbar ul.mainmenu-items[data-main-menu] > li.mainmenu-item.has-subitems.mainmenu-pinned > a:after {
     display: none;
 }
@@ -10,4 +7,33 @@
 
 .mainmenu-item .nav-icon .icon-thumb-tack.rotate-45:before {
     transform: rotate(45deg);
+}
+
+body:not(.drag) ul.mainmenu-items.hover-effects li > a:hover .nav-icon .icon-thumb-tack .icon-circle {
+    color: #6a6cf7;
+}
+
+body:not(.drag) ul.mainmenu-items.hover-effects li > a .nav-icon .icon-thumb-tack .icon-circle {
+    color: #2D3134;
+    transition: none;
+}
+
+.mainmenu-item.mainmenu-pinned.active .nav-icon .icon-thumb-tack {
+    color: #DD7139;
+}
+
+.icon-stack {
+    display: inline-block;
+    height: 2em;
+    line-height: 2em;
+    position: relative;
+    vertical-align: middle;
+    width: 2.5em;
+}
+
+.icon-stack > [class*='icon-'] {
+    left: 0;
+    position: absolute;
+    text-align: center;
+    width: 100%;
 }

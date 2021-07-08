@@ -1,31 +1,9 @@
-<style>
-    .temp:hover {
-        color: #6A6CF7;
-    }
-    .temp {
-        transition: 0.1s !important;
-    }
-</style>
-
-<li class="mainmenu-item">
-    <a href="#" data-request="onPinPage">
-        <span class="nav-icon">
-            <i class="icon-thumb-tack"></i>
-        </span>
-        <span class="nav-label">
-            Pin this page
-        </span>
-    </a>
-</li>
-
-<li class="mainmenu-item section-title">
-    <span class="nav-label">Pinned Pages</span>
-</li>
-
 <?php foreach (BackendAuth::user()->pinned_pages as $page): ?>
 <?php $url = Backend::url(e($page->path)) ?>
 
-<li class="mainmenu-item" style="display: flex; justify-content: space-between">
+<li class="mainmenu-item"
+    data-pinned-page="<?= e($page->path) ?>"
+    style="display: flex; justify-content: space-between">
     <a href="<?= $url ?>" style="width: 100%;">
         <span class="nav-icon">
             <i class="<?= e($page->icon) ?>"></i>
@@ -35,9 +13,15 @@
         </span>
     </a>
     <a href="#"
+       data-tooltip-text="Unpin page"
        data-request="onPinPageRemove"
        data-request-data="path: '<?= e($page->path) ?>'"
-       data-request-success="$(this.parentNode).slideUp(200);"
+       data-request-success="
+       $(this).closest('ul').find('[data-current-pin=\''+data.result+'\']').slideDown();
+       $(this).closest('ul').find('[data-current-unpin=\''+data.result+'\']').slideUp();
+       $(this).closest('ul').find('[data-current-pin-status=\''+data.result+'\']').removeClass('active');
+       $(this).closest('li').remove();
+       $('[data-current-pin-status=\'<?= e($page->path) ?>\']').removeClass('active');"
        class="temp"
        style="padding: 0 10px 0; background: transparent !important;">
         <span class="nav-icon" style="display: block; position:unset;text-align: center">
