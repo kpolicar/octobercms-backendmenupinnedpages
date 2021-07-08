@@ -14,11 +14,14 @@ class PinnedPagesController extends ControllerBehavior
     {
         $backendPath = $this->currentBackendPath();
         $activeMenuItem = optional(BackendMenu::getActiveMainMenuItem());
+        $label = post('label')
+            ? e(post('label'))
+            : ($activeMenuItem->label ? e(trans($activeMenuItem->label)) : 'Default title');
 
         BackendAuth::user()->pinned_pages()->create([
             'path' => $backendPath,
             'icon' => $activeMenuItem->icon ?: 'icon-files-o',
-            'label' => $activeMenuItem->label ? e(trans($activeMenuItem->label)) : 'Default title',
+            'label' => $label,
         ]);
 
         return [
