@@ -52,17 +52,18 @@ class Plugin extends PluginBase
         if (!app()->runningInBackend())
             return;
 
-        BackendController::extend(function($controller)
-        {
-            $controller->extendClassWith(PinnedPagesController::class);
-
+        BackendController::extend(function($controller) {
             if (BackendAuth::check()) {
+                $controller->extendClassWith(PinnedPagesController::class);
                 $controller->addCss('/plugins/kpolicar/backendmenupinnedpages/assets/css/menu.css');
                 $controller->addJs('/plugins/kpolicar/backendmenupinnedpages/assets/js/menu.js', ['defer' => true]);
             }
         });
+
         \Event::listen('backend.layout.extendHead', function ($a) {
-            return $a->makeLayoutPartial('~/plugins/kpolicar/backendmenupinnedpages/layouts/_mainmenu_buttons');
+            if (BackendAuth::check()) {
+                return $a->makeLayoutPartial('~/plugins/kpolicar/backendmenupinnedpages/layouts/_mainmenu_buttons');
+            }
         });
 
         BackendUser::extend(function ($user) {
