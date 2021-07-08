@@ -39,10 +39,6 @@ class PinnedPage extends Model
         'updated_at'
     ];
 
-    public $attributes = [
-        'label' => 'Default label',
-    ];
-
     /**
      * @var array hasOne and other relations
      */
