@@ -17,9 +17,10 @@
        data-request="onPinPageRemove"
        data-request-data="path: '<?= e($page->path) ?>'"
        data-request-success="
-       $(this).closest('ul').find('[data-current-pin=\''+data.result+'\']').slideDown();
-       $(this).closest('ul').find('[data-current-unpin=\''+data.result+'\']').slideUp();
-       $(this).closest('ul').find('[data-current-pin-status=\''+data.result+'\']').removeClass('active');
+       $(this).closest('ul').find('[data-current-pin-label]').toggle(data.count != 0);
+       $(this).closest('ul').find('[data-current-pin=\''+data.path+'\']').slideDown();
+       $(this).closest('ul').find('[data-current-unpin=\''+data.path+'\']').slideUp();
+       $(this).closest('ul').find('[data-current-pin-status=\''+data.path+'\']').removeClass('active');
        $(this).closest('li').remove();
        $('[data-current-pin-status=\'<?= e($page->path) ?>\']').removeClass('active');"
        class="temp"

@@ -43,6 +43,7 @@
                data-request-before-update="
                $(this).closest('ul').find('[data-pinned-page]').remove();"
                data-request-success="
+               $(this).closest('ul').find('[data-current-pin-label]').show();
                $(this).closest('li').find('[data-current-unpin]').slideDown();
                $(this).slideUp();
                $('[data-current-pin-status=\''+$(this).data('current-pin')+'\']').addClass('active');"
@@ -59,7 +60,8 @@
             <a href="#"
                data-request="onPinPageRemove"
                data-request-success="
-               $(this).closest('ul').find('[data-pinned-page=\''+data.result+'\']').remove();
+               $(this).closest('ul').find('[data-pinned-page=\''+data.path+'\']').remove();
+               $(this).closest('ul').find('[data-current-pin-label]').toggle(data.count != 0);
                $(this).closest('li').find('[data-current-pin]').slideDown();
                $(this).slideUp();
                $('[data-current-pin-status=\''+$(this).data('current-unpin')+'\']').removeClass('active');"
@@ -74,10 +76,15 @@
             </a>
         </li>
 
-        <li class="mainmenu-item section-title">
+        <li class="mainmenu-item section-title"
+            data-current-pin-label
+            style="<?= BackendAuth::user()->pinned_pages->count() == 0 ? 'display: none' :'' ?>">
             <span class="nav-label">Pinned Pages</span>
         </li>
 
         <?= $this->makeLayoutPartial('~/plugins/kpolicar/backendmenupinnedpages/layouts/_mainmenu_pinned_items') ?>
+
+        <li class="mainmenu-item">
+        </li>
     </ul>
 </template>

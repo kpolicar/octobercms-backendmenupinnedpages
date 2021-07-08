@@ -1,4 +1,4 @@
-<?php namespace Kpolicar\BackendmenuPinnedPages\Helpers;
+<?php namespace Kpolicar\BackendMenuPinnedPages\Helpers;
 
 use BackendAuth;
 use BackendMenu;

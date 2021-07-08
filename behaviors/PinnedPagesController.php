@@ -1,7 +1,9 @@
-<?php namespace Kpolicar\BackendmenuPinnedPages\Behaviors;
+<?php namespace Kpolicar\BackendMenuPinnedPages\Behaviors;
 
 use Backend;
+use Kpolicar\BackendMenuPinnedPages\Helpers\SettingsManagerHelper;
 use Request;
+use System\Classes\SettingsManager;
 use Validator;
 use BackendAuth;
 use BackendMenu;
@@ -13,21 +15,35 @@ class PinnedPagesController extends ControllerBehavior
     public function onPinPage()
     {
         $backendPath = $this->currentBackendPath();
-        $activeMenuItem = optional(BackendMenu::getActiveMainMenuItem());
-        $label = post('label')
-            ? e(post('label'))
-            : ($activeMenuItem->label ? e(trans($activeMenuItem->label)) : 'Default title');
 
         BackendAuth::user()->pinned_pages()->create([
             'path' => $backendPath,
-            'icon' => $activeMenuItem->icon ?: 'icon-files-o',
-            'label' => $label,
+            'icon' => $this->parseIconFromSettingsManager() ?? $this->parseIconFromMainMenu() ?? 'icon-files-o',
+            'label' => e(post('label')),
         ]);
 
         return [
             '@#layout-mainmenu .js-pinned-pages' =>
                 $this->makeLayoutPartial('~/plugins/kpolicar/backendmenupinnedpages/layouts/_mainmenu_pinned_items')
         ];
+    }
+
+    protected function parseIconFromSettingsManager()
+    {
+        $items = collect(SettingsManager::instance()->listItems());
+        $active = optional($items->flatten()->first(function ($item) {
+            return SettingsManagerHelper::settingsMenuItemIsActive($item);
+        }));
+        //dd($items, \System\Classes\SettingsManager::instance()->getContext());
+
+        return $active->icon;
+    }
+
+    protected function parseIconFromMainMenu()
+    {
+        $activeMenuItem = optional(BackendMenu::getActiveMainMenuItem());
+
+        return $activeMenuItem->icon;
     }
 
     public function onPinPageRemove() {
@@ -39,7 +55,10 @@ class PinnedPagesController extends ControllerBehavior
 
         BackendAuth::user()->pinned_pages()->where('path', $backendPath)->delete();
 
-        return $backendPath;
+        return [
+            'path' => $backendPath,
+            'count' => BackendAuth::user()->pinned_pages->count(),
+        ];
     }
 
     public function currentBackendPath()

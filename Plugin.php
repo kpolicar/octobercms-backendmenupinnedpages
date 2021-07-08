@@ -1,18 +1,19 @@
-<?php namespace Kpolicar\BackendmenuPinnedPages;
+<?php namespace Kpolicar\BackendMenuPinnedPages;
 
 use Backend;
-use Kpolicar\BackendmenuPinnedPages\Behaviors\PinnedPagesController;
-use Kpolicar\BackendmenuPinnedPages\Controllers\Index;
-use Kpolicar\BackendmenuPinnedPages\Helpers\BackendMenuHelpers;
+use Illuminate\Support\Collection;
+use Kpolicar\BackendMenuPinnedPages\Behaviors\PinnedPagesController;
+use Kpolicar\BackendMenuPinnedPages\Helpers\SettingsManagerHelper;
 use Kpolicar\BackendMenuPinnedPages\Models\PinnedPage;
 use System\Classes\CombineAssets;
 use System\Classes\PluginBase;
 use Backend\Classes\Controller as BackendController;
 use Backend\Models\User as BackendUser;
 use BackendAuth;
+use System\Classes\SettingsManager;
 
 /**
- * BackendmenuPinnedPages Plugin Information File
+ * BackendMenuPinnedPages Plugin Information File
  */
 class Plugin extends PluginBase
 {
@@ -24,10 +25,10 @@ class Plugin extends PluginBase
     public function pluginDetails()
     {
         return [
-            'name'        => 'BackendmenuPinnedPages',
-            'description' => 'No description provided yet...',
-            'author'      => 'Kpolicar',
-            'icon'        => 'icon-leaf'
+            'name'        => 'kpolicar.backendmenupinnedpages::lang.plugin.name',
+            'description' => 'kpolicar.backendmenupinnedpages::lang.plugin.description',
+            'author'      => 'Klemen Janez Poličar',
+            'icon'        => 'icon-thumb-tack'
         ];
     }
 
@@ -67,22 +68,5 @@ class Plugin extends PluginBase
         BackendUser::extend(function ($user) {
             $user->hasMany += ['pinned_pages' => PinnedPage::class];
         });
-    }
-
-    /**
-     * Registers any back-end permissions used by this plugin.
-     *
-     * @return array
-     */
-    public function registerPermissions()
-    {
-        return []; // Remove this line to activate
-
-        return [
-            'kpolicar.backendmenupinnedpages.some_permission' => [
-                'tab' => 'Backendmenupinnedpages',
-                'label' => 'Some permission'
-            ],
-        ];
     }
 }
