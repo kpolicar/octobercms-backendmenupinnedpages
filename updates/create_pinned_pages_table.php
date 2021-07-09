@@ -11,7 +11,7 @@ class CreatePinnedPagesTable extends Migration
 {
     public function up()
     {
-        Schema::create('backend_users_pinned_pages', function (Blueprint $table) {
+        Schema::create('kpolicar_backendmenupinnedpages_pages', function (Blueprint $table) {
             $table->unsignedInteger('user_id');
             $table->string('label');
             $table->string('path');
@@ -27,6 +27,6 @@ class CreatePinnedPagesTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('backend_users_pinned_pages');
+        Schema::dropIfExists('kpolicar_backendmenupinnedpages_pages');
     }
 }

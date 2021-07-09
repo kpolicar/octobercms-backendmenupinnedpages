@@ -13,7 +13,7 @@ class PinnedPage extends Model
     /**
      * @var string table associated with the model
      */
-    public $table = 'backend_users_pinned_pages';
+    public $table = 'kpolicar_backendmenupinnedpages_pages';
 
     /**
      * @var array fillable attributes are mass assignable
