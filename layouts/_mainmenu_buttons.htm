@@ -1,4 +1,4 @@
-<template id="mainmenu-items-extension">
+<template id="kpolicar_backendmenupinnedpages_mainmenu-items-extension">
     <li class="mainmenu-item mainmenu-preview mainmenu-pinned has-subitems <?= $this->isCurrentPathPinned() ? 'active' : '' ?>"
         data-current-pin-status="<?= e($this->currentBackendPath()) ?>"
         data-submenu-index="pinned">
@@ -15,14 +15,14 @@
 
         <?php if (isset($isVerticalMenu)): ?>
         <span class="nav-label">
-            <?= e(trans('backend::lang.tooltips.preview_website')) ?>
+            <?= e(trans('kpolicar.backendmenupinnedpages::lang.menu.item_tooltip')) ?>
         </span>
         <?php endif ?>
         </a>
     </li>
 </template>
 
-<template id="mainmenu-submenu-dropdowns">
+<template id="kpolicar_backendmenupinnedpages_mainmenu-submenu-dropdowns">
     <ul class="mainmenu-items mainmenu-submenu-dropdown hover-effects js-pinned-pages"
         data-submenu-index="pinned">
 

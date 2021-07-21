@@ -1,6 +1,6 @@
 <?php namespace Kpolicar\BackendMenuPinnedPages;
 
-use Backend;
+use Event;
 use Kpolicar\BackendMenuPinnedPages\Behaviors\PinnedPagesController;
 use Kpolicar\BackendMenuPinnedPages\Models\PinnedPage;
 use System\Classes\PluginBase;
@@ -29,16 +29,6 @@ class Plugin extends PluginBase
     }
 
     /**
-     * Register method, called when the plugin is first registered.
-     *
-     * @return void
-     */
-    public function register()
-    {
-
-    }
-
-    /**
      * Boot method, called right before the request route.
      *
      * @return void
@@ -56,7 +46,7 @@ class Plugin extends PluginBase
             }
         });
 
-        \Event::listen('backend.layout.extendHead', function ($a) {
+        Event::listen('backend.layout.extendHead', function ($a) {
             if (BackendAuth::check()) {
                 return $a->makeLayoutPartial('~/plugins/kpolicar/backendmenupinnedpages/layouts/_mainmenu_buttons');
             }
